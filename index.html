@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Academic English vocabulary — 11 units, 1200+ words with pronunciation, definitions, examples and synonyms.">
+    <meta name="color-scheme" content="dark light">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Academic EN">
+    <title>Academic English — Learning Hub</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+    <!-- Optional: set API URL when not using npm start (default http://localhost:3000 for file://) -->
+    <!-- <meta name="api-base" content="http://localhost:3000"> -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="pwaInstallBar" class="pwa-install-bar is-hidden" role="region" aria-label="Install app">
+        <p class="pwa-install-text">Install on your phone for the best experience.</p>
+        <div class="pwa-install-actions">
+            <button type="button" class="btn btn-primary" id="pwaInstallBtn">Install app</button>
+            <button type="button" class="btn" id="pwaInstallDismiss" aria-label="Dismiss">×</button>
+        </div>
+    </div>
+
+    <div id="serverBanner" class="server-banner is-hidden" role="alert">
+        <strong>Server ishlamayapti.</strong>
+        Terminalda: <code>npm install</code> → <code>npm start</code> →
+        <a href="http://localhost:3000">http://localhost:3000</a> oching.
+    </div>
+
+    <div class="app-shell">
+        <!-- Auth -->
+        <section id="authView" class="auth-view" aria-label="Enter nickname">
+            <div class="auth-card">
+                <div class="online-widget" data-online-widget aria-live="polite">
+                    <span class="online-pulse" aria-hidden="true"></span>
+                    <div class="online-widget-body">
+                        <span class="online-count" data-online-count>—</span>
+                        <span class="online-label" data-online-label>learners online now</span>
+                    </div>
+                </div>
+                <span class="home-badge">✦ Academic English</span>
+                <h1 id="authHeading">Xush kelibsiz</h1>
+                <p id="authSubheading" class="auth-sub">Davom etish uchun nickname kiriting.</p>
+
+                <form id="authForm" novalidate>
+                    <label class="auth-field">
+                        <span>Nickname</span>
+                        <input
+                            type="text"
+                            id="authUsername"
+                            name="username"
+                            autocomplete="nickname"
+                            placeholder="masalan: sarah_ielts"
+                            minlength="3"
+                            maxlength="24"
+                            pattern="[a-zA-Z0-9_]{3,24}"
+                            required
+                        >
+                        <small>3–24 belgi · harf, raqam, pastki chiziq · har bir nickname bir marta</small>
+                    </label>
+                    <p id="authError" class="auth-error" role="alert"></p>
+                    <button type="submit" class="btn btn-primary btn-auth-submit" id="authSubmit">Davom etish</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Home -->
+        <section id="homeView" class="is-hidden" aria-label="Home">
+            <header class="profile-bar is-hidden" id="profileBar">
+                <div class="profile-bar-main">
+                    <span class="profile-avatar" id="profileAvatar" aria-hidden="true">?</span>
+                    <div>
+                        <p class="profile-name" id="profileName">@user</p>
+                        <p class="profile-meta" id="profileMeta"></p>
+                        <p class="profile-book" id="profileBook">—</p>
+                        <p class="profile-coins" id="profileCoins">💰 Coins: 0</p>
+                    </div>
+                </div>
+                <div class="profile-bar-actions">
+                    <button type="button" class="btn btn-sm" id="btnChangeBook" aria-label="Change vocabulary book">Change book</button>
+                    <button type="button" class="btn" id="btnLogout">Chiqish</button>
+                </div>
+            </header>
+
+            <div class="online-widget online-widget--home" data-online-widget aria-live="polite">
+                <span class="online-pulse" aria-hidden="true"></span>
+                <div class="online-widget-body">
+                    <span class="online-count" data-online-count>—</span>
+                    <span class="online-label" data-online-label>learners online now</span>
+                </div>
+                <span class="online-badge">Live</span>
+            </div>
+
+            <div class="home-hero">
+                <span class="home-badge">✦ Academic English</span>
+                <h1>Your learning hub</h1>
+                <p>Choose a module to begin. Works on Android &amp; iPhone — add to home screen for app-like experience.</p>
+            </div>
+
+            <div class="module-grid">
+                <article
+                    id="vocabModuleCard"
+                    class="module-card"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Open Vocabulary — Units 1 to 10"
+                >
+                    <span class="module-icon" aria-hidden="true">📘</span>
+                    <h2>Vocabulary</h2>
+                    <p>Units 1–11 with IPA pronunciation, clear definitions, example sentences, and synonyms. Search, filter, and listen with text-to-speech.</p>
+                    <div class="module-meta">
+                        <span class="meta-tag">11 units</span>
+                        <span class="meta-tag">1,100+ words</span>
+                        <span class="meta-tag">Text-to-speech</span>
+                    </div>
+                    <span class="module-arrow" aria-hidden="true">→</span>
+                </article>
+
+                <article
+                    id="grammarModuleCard"
+                    class="module-card"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Open Grammar — Tenses and Units 1 to 11"
+                >
+                    <span class="module-icon" aria-hidden="true">📝</span>
+                    <h2>Grammar</h2>
+                    <p>All English tenses with clear examples and Uzbek explanations, then essential grammar from Units 1–11.</p>
+                    <div class="module-meta">
+                        <span class="meta-tag">15 tenses</span>
+                        <span class="meta-tag">11 units</span>
+                        <span class="meta-tag">Bilingual notes</span>
+                    </div>
+                    <span class="module-arrow" aria-hidden="true">→</span>
+                </article>
+
+                <article
+                    id="gameModuleCard"
+                    class="module-card module-card--game"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Open Vocabulary Game — Play with Robot or Real Players"
+                >
+                    <span class="module-icon" aria-hidden="true">🎮</span>
+                    <h2>Vocabulary Game</h2>
+                    <p>Robot yoki haqiqiy o‘yinchi bilan o‘ynang. To‘g‘ri javob uchun 2 tanga, g‘alaba uchun 5 tanga.</p>
+                    <div class="module-meta">
+                        <span class="meta-tag">Robot · 2 coin</span>
+                        <span class="meta-tag">PvP · 5 coin</span>
+                        <span class="meta-tag">Online</span>
+                    </div>
+                    <span class="module-arrow" aria-hidden="true">→</span>
+                </article>
+
+                <article
+                    id="progressModuleCard"
+                    class="module-card module-card--progress"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Open My Progress"
+                >
+                    <span class="module-icon" aria-hidden="true">📊</span>
+                    <h2>My Progress</h2>
+                    <p>Tangalar, tanlangan kitob va o‘yin statistikangiz. O‘qish va o‘yin natijalaringizni kuzating.</p>
+                    <div class="module-meta">
+                        <span class="meta-tag">Coins</span>
+                        <span class="meta-tag">Profile</span>
+                        <span class="meta-tag">Stats</span>
+                    </div>
+                    <span class="module-arrow" aria-hidden="true">→</span>
+                </article>
+            </div>
+
+            <div id="joinGameBanner" class="join-game-banner is-hidden" role="alert" aria-live="polite">
+                <p id="joinGameBannerText"></p>
+                <button type="button" class="btn btn-primary btn-sm" id="btnJoinGameAccept">Join game</button>
+                <button type="button" class="btn btn-sm" id="btnJoinGameDismiss" aria-label="Dismiss">×</button>
+            </div>
+
+            <p class="home-footer">
+                PWA · Android &amp; iOS · Press <kbd>/</kbd> to search
+            </p>
+        </section>
+
+        <!-- Vocabulary -->
+        <section id="vocabView" aria-label="Vocabulary">
+            <header class="vocab-topbar">
+                <button type="button" class="btn-back" id="btnBack" aria-label="Back to home">
+                    ← Back
+                </button>
+                <div class="vocab-title-block">
+                    <h1>Vocabulary</h1>
+                    <span class="vocab-book-label" id="vocabBookLabel"></span>
+                </div>
+                <div class="vocab-topbar-actions">
+                    <button type="button" class="btn btn-sm" id="btnVocabChangeBook" aria-label="Change vocabulary book">Change book</button>
+                    <span class="stats-bar" id="globalStats" aria-live="polite"></span>
+                </div>
+            </header>
+
+            <div class="toolbar" role="search">
+                <div class="toolbar-row">
+                    <div class="search-wrap">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input
+                            type="search"
+                            id="search"
+                            placeholder="Search word, definition, example, or synonym…"
+                            autocomplete="off"
+                            aria-label="Search vocabulary"
+                        >
+                        <button type="button" class="search-clear" id="searchClear" aria-label="Clear search">×</button>
+                    </div>
+                    <select id="unitFilter" aria-label="Filter by unit">
+                        <option value="all">All units</option>
+                        <option value="1">Unit 1: Personality</option>
+                        <option value="2">Unit 2: Time &amp; History</option>
+                        <option value="3">Unit 3: Conformity &amp; Society</option>
+                        <option value="4">Unit 4: Science &amp; Chemistry</option>
+                        <option value="5">Unit 5: Education &amp; Careers</option>
+                        <option value="6">Unit 6: Advertising &amp; Persuasion</option>
+                        <option value="7">Unit 7: Travel &amp; Culture</option>
+                        <option value="8">Unit 8: Society &amp; Government</option>
+                        <option value="9">Unit 9: Nature &amp; Conservation</option>
+                        <option value="10">Unit 10: Rocket Science &amp; Space</option>
+                    </select>
+                    <select id="posFilter" aria-label="Filter by part of speech">
+                        <option value="all">All parts of speech</option>
+                    </select>
+                    <select id="sortBy" aria-label="Sort words">
+                        <option value="default">Sort: Unit order</option>
+                        <option value="az">Sort: A → Z</option>
+                        <option value="za">Sort: Z → A</option>
+                    </select>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="unit-chips" id="unitChips" role="group" aria-label="Quick unit filter"></div>
+                </div>
+
+                <div class="toolbar-row">
+                    <div class="btn-group">
+                        <button type="button" class="btn is-active" id="btnSynonyms">Synonyms: On</button>
+                        <button type="button" class="btn" id="btnCompact">View: Full</button>
+                        <button type="button" class="btn btn-primary" id="btnReset">Reset filters</button>
+                        <button type="button" class="btn" id="btnTop">↑ Top</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-bar" id="loadingBar" aria-hidden="true"><span></span></div>
+            <p class="results-info" id="resultsText" aria-live="polite">Loading vocabulary…</p>
+            <main id="vocabContainer"></main>
+        </section>
+
+        <!-- Grammar -->
+        <section id="grammarView" aria-label="Grammar">
+            <header class="vocab-topbar">
+                <button type="button" class="btn-back" id="btnGrammarBack" aria-label="Back to home">
+                    ← Back
+                </button>
+                <h1>Grammar</h1>
+                <span class="stats-bar" id="grammarStats" aria-live="polite"></span>
+            </header>
+
+            <nav class="grammar-nav" id="grammarNav" aria-label="Grammar sections">
+                <a href="#grammar-tenses" class="grammar-nav-link is-active" data-section="tenses">English tenses</a>
+                <a href="#grammar-units" class="grammar-nav-link" data-section="units">Units 1–11</a>
+            </nav>
+
+            <div class="grammar-toolbar" role="search">
+                <div class="search-wrap">
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <input
+                        type="search"
+                        id="grammarSearch"
+                        placeholder="Search tense, rule, or example…"
+                        autocomplete="off"
+                        aria-label="Search grammar"
+                    >
+                    <button type="button" class="search-clear" id="grammarSearchClear" aria-label="Clear search">×</button>
+                </div>
+                <select id="grammarUnitFilter" aria-label="Filter unit grammar" class="grammar-unit-select is-hidden">
+                    <option value="all">All units</option>
+                    <option value="1">Unit 1: Personality</option>
+                    <option value="2">Unit 2: Time &amp; History</option>
+                    <option value="3">Unit 3: Conformity &amp; Society</option>
+                    <option value="4">Unit 4: Science &amp; Chemistry</option>
+                    <option value="5">Unit 5: Education &amp; Careers</option>
+                    <option value="6">Unit 6: Advertising &amp; Persuasion</option>
+                    <option value="7">Unit 7: Travel &amp; Culture</option>
+                    <option value="8">Unit 8: Society &amp; Government</option>
+                    <option value="9">Unit 9: Nature &amp; Conservation</option>
+                    <option value="10">Unit 10: Rocket Science &amp; Space</option>
+                </select>
+                <button type="button" class="btn btn-primary" id="btnGrammarTop">↑ Top</button>
+            </div>
+
+            <p class="results-info" id="grammarResultsText" aria-live="polite"></p>
+            <main id="grammarContainer"></main>
+        </section>
+
+        <!-- Vocabulary Game -->
+        <section id="gameView" class="is-hidden" aria-label="Vocabulary Game">
+            <header class="vocab-topbar">
+                <button type="button" class="btn-back" id="btnGameBack" aria-label="Back to home">
+                    ← Back
+                </button>
+                <h1>Vocabulary Game</h1>
+                <span class="stats-bar" id="gameStats" aria-live="polite"></span>
+            </header>
+
+            <!-- Game Mode Selection -->
+            <div id="gameModeSelect" class="game-mode-select is-hidden">
+                <h2>Choose Your Game Mode</h2>
+                <p>Practice vocabulary and earn coins!</p>
+                <div class="game-mode-buttons">
+                    <button type="button" class="btn btn-primary btn-game-mode" id="btnPlayRobot">
+                        <span class="game-mode-icon">🤖</span>
+                        <span class="game-mode-title">Play with Robot</span>
+                        <span class="game-mode-desc">2 coins per correct answer</span>
+                    </button>
+                    <button type="button" class="btn btn-game-mode" id="btnPlayMultiplayer">
+                        <span class="game-mode-icon">👥</span>
+                        <span class="game-mode-title">Challenge a Player</span>
+                        <span class="game-mode-desc">5 coins for winning</span>
+                    </button>
+                    <button type="button" class="btn btn-game-mode" id="btnOpenLeaderboard">
+                        <span class="game-mode-icon">🏆</span>
+                        <span class="game-mode-title">Leaderboard</span>
+                        <span class="game-mode-desc">Top players by coins &amp; wins</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div id="gameLeaderboard" class="game-leaderboard is-hidden" aria-label="Leaderboard">
+                <div class="leaderboard-header">
+                    <h2>🏆 Leaderboard</h2>
+                    <p class="leaderboard-sub">Faqat haqiqiy PvP o‘yinchilar — test hisoblar ko‘rinmaydi</p>
+                </div>
+                <div class="leaderboard-tabs" role="tablist" aria-label="Sort leaderboard">
+                    <button type="button" class="leaderboard-tab is-active" data-sort="coins" role="tab" aria-selected="true">💰 Coins</button>
+                    <button type="button" class="leaderboard-tab" data-sort="wins" role="tab" aria-selected="false">⚔️ PvP wins</button>
+                </div>
+                <p id="leaderboardStatus" class="leaderboard-status" aria-live="polite">Loading…</p>
+                <ol id="leaderboardList" class="leaderboard-list"></ol>
+                <div id="leaderboardMyRank" class="leaderboard-my-rank is-hidden" aria-live="polite"></div>
+                <button type="button" class="btn btn-primary" id="btnLeaderboardBack">← Back to modes</button>
+            </div>
+
+            <!-- Robot Game -->
+            <div id="robotGame" class="game-container is-hidden">
+                <div class="robot-game-section">
+                    <h2>Robot Challenge</h2>
+                    <div class="difficulty-selector">
+                        <label>
+                            <input type="radio" name="difficulty" value="easy" checked>
+                            Easy (Common words)
+                        </label>
+                        <label>
+                            <input type="radio" name="difficulty" value="medium">
+                            Medium (Mixed difficulty)
+                        </label>
+                        <label>
+                            <input type="radio" name="difficulty" value="hard">
+                            Hard (Advanced words)
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btnStartRobotGame">Start Game</button>
+                </div>
+
+                <div id="robotGameActive" class="active-game is-hidden">
+                    <div class="game-progress">
+                        <div class="progress-info">
+                            <span id="robotScore">Score: 0</span>
+                            <span id="robotCoins">Coins: 0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="robotProgressBar" class="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="word-card">
+                        <p class="word-label">Find this word:</p>
+                        <p id="robotWordDefinition" class="word-definition"></p>
+                        <p id="robotWordExample" class="word-example"></p>
+                    </div>
+
+                    <div class="game-input">
+                        <input 
+                            type="text" 
+                            id="robotAnswerInput" 
+                            placeholder="Type the word..." 
+                            autocomplete="off"
+                            aria-label="Type the word"
+                        >
+                        <button type="button" class="btn btn-primary" id="btnSubmitAnswer">Submit</button>
+                    </div>
+
+                    <div id="robotFeedback" class="game-feedback"></div>
+                    <button type="button" class="btn btn-quit-game" id="btnQuitRobot">Quit Game</button>
+                </div>
+
+                <div id="robotGameOver" class="game-over is-hidden">
+                    <h3>Game Over!</h3>
+                    <p id="robotFinalScore"></p>
+                    <p id="robotTotalCoins"></p>
+                    <button type="button" class="btn btn-primary" id="btnPlayAgain">Play Again</button>
+                    <button type="button" class="btn" id="btnBackToModes">Back to Modes</button>
+                </div>
+            </div>
+
+            <!-- Multiplayer Game -->
+            <div id="multiplayerGame" class="game-container is-hidden">
+                <div id="mpWaitingRoom" class="waiting-room">
+                    <h2>Real player</h2>
+                    <p id="mpWaitingText">Online foydalanuvchilarga <strong>Join game</strong> taklifi yuboriladi. Birinchi qabul qilgan o‘yinchi siz bilan o‘ynaydi.</p>
+                    <p class="mp-online-count" id="mpOnlineCount" aria-live="polite"></p>
+                    <div class="game-actions">
+                        <button type="button" class="btn btn-primary" id="btnFindOpponent">Send Join game</button>
+                        <button type="button" class="btn" id="btnCancelMatch" disabled>Cancel</button>
+                        <button type="button" class="btn" id="btnBackToModes2">Back</button>
+                    </div>
+                    <p id="mpWaitingStatus" class="mp-waiting-status" aria-live="polite"></p>
+                </div>
+
+                <div id="mpGameActive" class="active-game is-hidden">
+                    <div class="game-progress">
+                        <div class="progress-info">
+                            <span id="mpScore">Your Score: 0</span>
+                            <span id="mpOpponent">vs. Player</span>
+                        </div>
+                    </div>
+
+                    <div class="word-card">
+                        <p class="word-label">Find this word:</p>
+                        <p id="mpWordDefinition" class="word-definition"></p>
+                    </div>
+
+                    <div class="game-input">
+                        <input 
+                            type="text" 
+                            id="mpAnswerInput" 
+                            placeholder="Type the word..." 
+                            autocomplete="off"
+                            aria-label="Type the word"
+                        >
+                        <button type="button" class="btn btn-primary" id="btnMpSubmitAnswer">Submit</button>
+                    </div>
+
+                    <div id="mpFeedback" class="game-feedback"></div>
+                </div>
+
+                <div id="mpGameOver" class="game-over is-hidden">
+                    <h3 id="mpResultTitle">Game Over!</h3>
+                    <p id="mpResultMessage"></p>
+                    <p id="mpResultCoins"></p>
+                    <button type="button" class="btn btn-primary" id="btnPlayMultiplayerAgain">Play Again</button>
+                    <button type="button" class="btn" id="btnBackToHome">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Progress -->
+        <section id="progressView" class="is-hidden" aria-label="My Progress">
+            <header class="vocab-topbar">
+                <button type="button" class="btn-back" id="btnProgressBack" aria-label="Back to home">
+                    ← Back
+                </button>
+                <h1>My Progress</h1>
+            </header>
+            <div class="progress-panel">
+                <div class="progress-stat-card">
+                    <span class="progress-stat-label">Coins</span>
+                    <span class="progress-stat-value" id="progressCoins">0</span>
+                </div>
+                <div class="progress-stat-card">
+                    <span class="progress-stat-label">Vocabulary book</span>
+                    <span class="progress-stat-value progress-stat-value--sm" id="progressBook">—</span>
+                </div>
+                <div class="progress-stat-card">
+                    <span class="progress-stat-label">Nickname</span>
+                    <span class="progress-stat-value progress-stat-value--sm" id="progressUsername">—</span>
+                </div>
+                <p class="progress-hint">Robot o‘yinida har bir to‘g‘ri javob +2 tanga. Real o‘yinda g‘alaba +5 tanga.</p>
+                <button type="button" class="btn btn-primary" id="btnProgressChangeBook">Change vocabulary book</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Vocabulary book picker -->
+    <div id="bookModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="bookModalTitle">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <h2 id="bookModalTitle">Choose your vocabulary book</h2>
+            <p class="modal-lead">Which book do you want to study? Your choice is saved to your profile.</p>
+            <div id="bookModalList" class="book-modal-list"></div>
+            <p id="bookModalError" class="auth-error" role="alert"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn" id="bookModalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="bookModalConfirm">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change vocabulary book modal -->
+    <div id="changeBookModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="changeBookModalTitle">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <h2 id="changeBookModalTitle">Change vocabulary book</h2>
+            <p class="modal-lead">Select a different book to study.</p>
+            <div id="changeBookModalList" class="book-modal-list"></div>
+            <p id="changeBookModalError" class="auth-error" role="alert"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn" id="changeBookModalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="changeBookModalConfirm">Change</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/grammar-data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/presence.js"></script>
+    <script src="js/pwa.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
